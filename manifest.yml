@@ -1,4 +1,4 @@
 applications:
- - name: chat-server
+ - name: cloud-chat-client
    memory: 512M
    instances: 1
