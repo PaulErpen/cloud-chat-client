@@ -3,12 +3,14 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { UserListService } from '../components/user-list/services/user-list.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+const env = environment;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private url = 'http://localhost:3000';
+  private url = env.apiUrl;
   private socket;
 
     constructor(private userlistservice: UserListService, private http: HttpClient) {

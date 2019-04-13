@@ -276,14 +276,14 @@ var AuthenticationService = /** @class */ (function () {
         var _this = this;
         var data = JSON.stringify({ 'username': username, 'password': password });
         var headers = { headers: { 'Content-Type': 'application/json' } };
-        return this.http.post('http://localhost:3000' + '/login', data, headers).toPromise()
+        return this.http.post(env.apiUrl + '/login', data, headers).toPromise()
             .then(function (res) { return _this.validateLogin(res); });
     };
     AuthenticationService.prototype.register = function (username, password) {
         var _this = this;
         var data = JSON.stringify({ 'username': username, 'password': password });
         var headers = { headers: { 'Content-Type': 'application/json' } };
-        return this.http.post('http://localhost:3000' + '/register', data, headers).toPromise()
+        return this.http.post(env.apiUrl + '/register', data, headers).toPromise()
             .then(function (res) { return _this.validateLogin(res); });
     };
     AuthenticationService.prototype.validateLogin = function (res) {
@@ -603,7 +603,7 @@ __webpack_require__.r(__webpack_exports__);
 var UserListService = /** @class */ (function () {
     function UserListService() {
         var _this = this;
-        this.url = 'http://localhost:3000';
+        this.url = env.apiUrl;
         this.users = [];
         this.getUsers = function () {
             return rxjs_Observable__WEBPACK_IMPORTED_MODULE_3__["Observable"].create(function (observer) {
@@ -761,7 +761,7 @@ var ChatService = /** @class */ (function () {
         var _this = this;
         this.userlistservice = userlistservice;
         this.http = http;
-        this.url = 'http://localhost:3000';
+        this.url = env.apiUrl;
         this.getMessages = function () {
             return rxjs_Observable__WEBPACK_IMPORTED_MODULE_3__["Observable"].create(function (observer) {
                 _this.socket.on('new broadcast', function (message) {

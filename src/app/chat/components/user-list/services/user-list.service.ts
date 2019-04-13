@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { OnlineUser } from '../../../../_models/online_user';
+import { environment } from '../../../../../environments/environment';
+const env = environment;
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserListService {
-  private url = 'http://localhost:3000';
+  private url = env.apiUrl;
   private socket;
   users: OnlineUser[] = [];
 

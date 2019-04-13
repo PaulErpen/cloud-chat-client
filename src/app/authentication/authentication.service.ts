@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ChatService } from '../chat/services/chat.service';
-
 import { User } from '../_models/user';
+
+import { environment } from '../../environments/environment';
+const env = environment;
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -22,7 +24,7 @@ export class AuthenticationService {
     login(username: string, password: string) {
         var data = JSON.stringify({'username':username, 'password':password});
         var headers = {headers: {'Content-Type': 'application/json'}};
-        return this.http.post('http://localhost:3000'+'/login', 
+        return this.http.post(env.apiUrl+'/login', 
             data, headers).toPromise()
             .then(
                 (res) => this.validateLogin(res)
@@ -32,7 +34,7 @@ export class AuthenticationService {
     register(username: string, password: string) {
         var data = JSON.stringify({'username':username, 'password':password});
         var headers = {headers: {'Content-Type': 'application/json'}};
-        return this.http.post('http://localhost:3000'+'/register', 
+        return this.http.post(env.apiUrl+'/register', 
             data,
             headers).toPromise()
             .then(
