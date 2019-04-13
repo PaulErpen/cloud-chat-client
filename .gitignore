@@ -2,6 +2,7 @@
 
 # compiled output
 /dist/chat-example/*
+!/dist/chat-example/.gitkeep
 /tmp
 /out-tsc
 # Only exists if Bazel was run
@@ -44,5 +45,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-dist/chat-example/*
