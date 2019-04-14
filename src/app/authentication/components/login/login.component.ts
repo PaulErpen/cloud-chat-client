@@ -31,9 +31,4 @@ export class LoginComponent implements OnInit {
       this.error = "Login failed!";
     }
   }
-
-  toRegistration() {
-    this.router.navigate(["/registration"]);
-  }
-
 }
