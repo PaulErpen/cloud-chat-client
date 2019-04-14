@@ -321,7 +321,7 @@ var AuthenticationService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class = \"login-panel\">\n    <h2>Login</h2>\n    <input type = \"text\" [(ngModel)]=\"username\" placeholder=\"Username\">\n    <input type = \"password\" [(ngModel)]=\"password\" placeholder=\"Password\">\n    <div class = \"button-wrapper-broad\">\n        <button class = \"login-button\" (click)=\"login()\">Login</button>\n    </div>\n    <a href=\"/registration\">Click here to register.</a>\n</div>\n<div *ngIf= \"error\" class = \"error\">{{this.error}}</div>"
+module.exports = "<div class = \"login-panel\">\n    <h2>Login</h2>\n    <input type = \"text\" [(ngModel)]=\"username\" placeholder=\"Username\">\n    <input type = \"password\" [(ngModel)]=\"password\" placeholder=\"Password\">\n    <div class = \"button-wrapper-broad\">\n        <button class = \"login-button\" (click)=\"login()\">Login</button>\n    </div>\n    <button (click) = \"toRegistration()\">Click here to register</button>\n</div>\n<div *ngIf= \"error\" class = \"error\">{{this.error}}</div>"
 
 /***/ }),
 
@@ -373,6 +373,9 @@ var LoginComponent = /** @class */ (function () {
         else {
             this.error = "Login failed!";
         }
+    };
+    LoginComponent.prototype.toRegistration = function () {
+        this.router.navigate(["/registration"]);
     };
     LoginComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
