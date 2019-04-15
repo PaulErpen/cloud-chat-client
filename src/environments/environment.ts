@@ -3,9 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  apiUrl: "http://cloud-chat.eu-de.mybluemix.net"
+  production: true,
+  apiUrl: "http://localhost:3000"
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file
