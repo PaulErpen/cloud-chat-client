@@ -31,6 +31,13 @@ export class AuthenticationService {
             );
     }
 
+    hasValidLogin() {
+        var user = localStorage.getItem("currentUser");
+        var headers = {headers: {'Content-Type': 'application/json'}};
+        return this.http.post(env.apiUrl+'/login', 
+            user, headers).toPromise();
+    }
+
     register(username: string, password: string) {
         var data = JSON.stringify({'username':username, 'password':password});
         var headers = {headers: {'Content-Type': 'application/json'}};
