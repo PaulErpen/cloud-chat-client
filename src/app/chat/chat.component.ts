@@ -3,6 +3,7 @@ import { ChatService } from './services/chat.service';
 import  *  as $ from 'jquery';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
+import { Message } from '../_models/message';
 
 @Component({
   selector: 'app-chat',
@@ -11,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ChatComponent implements OnInit {
   message: string;  
-  messages: string[] = [];
+  messages: Message[] = [];
   files: FileList;
   uploader: FileUploader = new FileUploader({ url: "http://localhost:3000/upload",
   itemAlias: 'photo',
@@ -36,8 +37,8 @@ export class ChatComponent implements OnInit {
     
     this.chatService
       .getMessages()
-      .subscribe((message: string) => {
-        this.messages[message.messageid] = message;
+      .subscribe((message: Message) => {
+        this.messages.push(message);
       });
     
     this.chatService
@@ -66,7 +67,11 @@ export class ChatComponent implements OnInit {
     this.chatService.sendFile(formData);
   }
 
-  updateMessage(update: string) {
-
+  updateMessage(update) {
+    for (const i in this.messages) {
+      if(this.messages[i].messageid == update.messageid) {
+        this.messages[i].mood = update.mood;
+      }
+    }
   }
 }
