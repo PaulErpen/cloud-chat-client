@@ -4,6 +4,9 @@ import  *  as $ from 'jquery';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
 import { Message } from '../_models/message';
+import { environment } from '../../environments/environment';
+
+const env = environment;
 
 @Component({
   selector: 'app-chat',
@@ -14,7 +17,7 @@ export class ChatComponent implements OnInit {
   message: string;  
   messages: Message[] = [];
   files: FileList;
-  uploader: FileUploader = new FileUploader({ url: "http://localhost:3000/upload",
+  uploader: FileUploader = new FileUploader({ url: env.apiUrl+"/upload",
   itemAlias: 'photo',
   removeAfterUpload: true, 
   autoUpload: false });

@@ -80,7 +80,7 @@ export class ChatService {
         formData.append("username", JSON.parse(localStorage.getItem("currentUser")).username);
         this.http
         .post(
-            "http://localhost:3000/upload", 
+            this.url+"/upload", 
             formData,
             {responseType: 'text'}
         ).toPromise()

@@ -6,13 +6,19 @@
     <div class = "right">
         <div class = "messages">
             <div class = "message" *ngFor="let message of messages">
-                <span class = "username" *ngIf="message.type != 'server';">{{message.username}}</span>
-                <span class = "receiving-users" *ngIf="message.type == 'message' || message.type == 'filemessage';"><span class = "to">to</span><span class = "received-user" *ngFor="let user of message.users">{{user}}</span>
-                </span>
-                <span class = "payload">{{message.payload}}</span>
-                <a class = "filelink" *ngIf="message.type == 'filebroadcast' || message.type == 'filemessage';" href= "{{message.file.filelink}}">{{message.file.filename}}</a>
-                <span class = "timestamp" *ngIf="message.type != 'server';">{{message.timestamp}}</span>
-                <span class = "mood" *ngIf="message.type != 'server';">{{message.mood}}</span>
+                <div class ="message-upper">
+                    <span class = "username" *ngIf="message.type != 'server';">{{message.username}}</span>
+                    <span class = "receiving-users" *ngIf="message.type == 'message' || message.type == 'filemessage';"><span class = "to">to</span><span class = "received-user" *ngFor="let user of message.users">{{user}}</span>
+                    </span>
+                </div>
+                <div class = "message-middle">
+                    <span class = "payload">{{message.payload}}</span>
+                    <a class = "filelink" *ngIf="message.type == 'filebroadcast' || message.type == 'filemessage';" href= "{{message.file.filelink}}">{{message.file.filename}}</a>
+                    <span class = "mood" *ngIf="message.type != 'server';">{{message.mood}}</span>
+                </div>
+                <div class = "message-lower">
+                    <span class = "timestamp" *ngIf="message.type != 'server';">{{message.timestamp}}</span>
+                </div>
             </div>
         </div>
         
