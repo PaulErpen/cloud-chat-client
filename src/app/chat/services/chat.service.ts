@@ -67,6 +67,13 @@ export class ChatService {
             });
         });
     }
+    public getUpdates = () => {
+        return Observable.create((observer) => {
+            this.socket.on('update message', (message) => {
+                observer.next(message);
+            });
+        });
+    }
     public sendFile(formData) {
         var selectedUsers = this.userlistservice.getSelectedUsers();
         formData.append("selectedUsers", selectedUsers.join(";"));

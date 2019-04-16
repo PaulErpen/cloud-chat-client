@@ -37,13 +37,19 @@ export class ChatComponent implements OnInit {
     this.chatService
       .getMessages()
       .subscribe((message: string) => {
-        this.messages.push(message);
+        this.messages[message.messageid] = message;
+      });
+    
+    this.chatService
+      .getUpdates()
+      .subscribe((update: string) => {
+        this.updateMessage(update);
       });
 
-      this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
-      this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-           console.log("ImageUpload:uploaded:", item, status, response);
-       };
+    this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+          console.log("ImageUpload:uploaded:", item, status, response);
+      };
   }
 
   onFileChange(event) { 
@@ -58,5 +64,9 @@ export class ChatComponent implements OnInit {
     formData.append('photo', inputEl.files.item(0));
     $('#photo')[0].value = "";
     this.chatService.sendFile(formData);
+  }
+
+  updateMessage(update: string) {
+
   }
 }
