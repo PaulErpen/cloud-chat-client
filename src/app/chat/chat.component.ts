@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit {
   constructor(private chatService: ChatService, private http: HttpClient) { }
 
   sendMessage() {
-    let inputEl: HTMLInputElement = $('#photo')[0];
+    let inputEl: HTMLInputElement = $('#file')[0];
     let fileCount: number = inputEl.files.length;
     if (fileCount > 0) { // a file was selected
       this.upload(inputEl);
@@ -91,7 +91,7 @@ export class ChatComponent implements OnInit {
       this.chatService.sendMessage(this.message);
       //TODO maybe insert error here
     }
-    $('#photo').value = ""; 
+    $('#file').value = ""; 
     this.message = "";
   }
 

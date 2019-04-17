@@ -29,7 +29,7 @@
         <div class = "bottom">
             <input [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()" />
             <button (click)="sendMessage()">Send</button>
-            <input id="photo" type="file" />
+            <input id="file" type="file" />
         </div>
     </div>
 </div>
