@@ -1,4 +1,4 @@
 export class UserFile {
-    filename: string;
-    filelink: string;
+    filedata: string;
+    filetype: string;
 }
