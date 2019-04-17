@@ -14,10 +14,12 @@
 
                 <div class = "message-middle">
                     <span class = "payload">{{message.payload}}</span>
+                    <span class = "mood" *ngIf="message.type != 'server';">{{message.mood}}</span>
                     <div class = "message-file" *ngIf="message.type == 'filebroadcast' || message.type == 'filemessage';">
                         <img *ngIf="message.file.filetype == 'image'" src="{{message.file.filedata}}">
+                        <audio controls *ngIf="message.file.filetype == 'audio'" src="{{message.file.filedata}}"></audio>
+                        <video controls *ngIf="message.file.filetype == 'video'" src="{{message.file.filedata}}"></video>
                     </div>
-                    <span class = "mood" *ngIf="message.type != 'server';">{{message.mood}}</span>
                 </div>
 
                 <div class = "message-lower">
@@ -31,5 +33,6 @@
             <button (click)="sendMessage()">Send</button>
             <input id="file" type="file" />
         </div>
+        <div *ngIf= "error" class = "error">{{this.error}} <button (click)="close()">Close</button></div>
     </div>
 </div>

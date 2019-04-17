@@ -4,8 +4,9 @@ import  *  as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 import { Message } from '../_models/message';
 
-
 const imgFormats = ["jpeg", "jpg", "gif", "png", "apng", "svg", "bmp"];
+const audioFormats = ["mp3", "ogg", "wav"];
+const videoFormats = ["mp4", "webm", "ogg"];
 
 @Component({
   selector: 'app-chat',
@@ -16,6 +17,7 @@ export class ChatComponent implements OnInit {
   message: string;  
   messages: Message[] = [];
   files: FileList;
+  error: string;
 
   constructor(private chatService: ChatService, private http: HttpClient) { }
 
@@ -54,13 +56,18 @@ export class ChatComponent implements OnInit {
       case "image":
         if(imgFormats.includes(fileFormat)) {return "image"}
         return undefined;
-    
+      case "audio":
+        if(audioFormats.includes(fileFormat)) {return "audio"}
+        return undefined;
+      case "video":
+        if(videoFormats.includes(fileFormat)) {return "video"}
+        return undefined;
       default:
         return undefined;
     }
   }
 
-  onFileChange(event) { 
+  onFileChange(event) {
     if(event.target.files && event.target.files.length) {
       this.files = event.target.files;
     }
@@ -86,9 +93,9 @@ export class ChatComponent implements OnInit {
       this.chatService.sendFile(data);
     } else {
       this.chatService.sendMessage(this.message);
-      //TODO maybe insert error here
+      this.error = "Filetype not supported!";
     }
-    $('#file').value = ""; 
+    $('#file').val(""); 
     this.message = "";
   }
 
@@ -107,5 +114,9 @@ export class ChatComponent implements OnInit {
         this.messages[i].mood = update.mood;
       }
     }
+  }
+
+  close() {
+    this.error = "";
   }
 }
