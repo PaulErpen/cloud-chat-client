@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from './services/chat.service';
 import  *  as $ from 'jquery';
-import { FileUploader } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
 import { Message } from '../_models/message';
-import { environment } from '../../environments/environment';
 
-const env = environment;
 
 const imgFormats = ["jpeg", "jpg", "gif", "png", "apng", "svg", "bmp"];
 
