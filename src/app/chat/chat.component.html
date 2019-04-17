@@ -11,11 +11,15 @@
                     <span class = "receiving-users" *ngIf="message.type == 'message' || message.type == 'filemessage';"><span class = "to">to</span><span class = "received-user" *ngFor="let user of message.users">{{user}}</span>
                     </span>
                 </div>
+
                 <div class = "message-middle">
                     <span class = "payload">{{message.payload}}</span>
-                    <a class = "filelink" *ngIf="message.type == 'filebroadcast' || message.type == 'filemessage';" href= "{{message.file.filelink}}">{{message.file.filename}}</a>
+                    <div class = "message-file" *ngIf="message.type == 'filebroadcast' || message.type == 'filemessage';">
+                        <img *ngIf="message.file.filetype == 'image'" src="{{message.file.filedata}}">
+                    </div>
                     <span class = "mood" *ngIf="message.type != 'server';">{{message.mood}}</span>
                 </div>
+
                 <div class = "message-lower">
                     <span class = "timestamp" *ngIf="message.type != 'server';">{{message.timestamp}}</span>
                 </div>

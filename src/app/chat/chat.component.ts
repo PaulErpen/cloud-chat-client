@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit {
     this.chatService
       .getMessages()
       .subscribe((message: Message) => {
-        this.handleNewMessage(message);
+        this.messages.push(message);
       });
     
     this.chatService
@@ -74,25 +74,20 @@ export class ChatComponent implements OnInit {
   }
 
   handleFileMessage(message: Message) {
-    var fileData = message.file.split(",");
-    debugger;
+    this.messages.push(message);
   }
 
   validFile(fileData) {
-    // fileData = fileData.split(";");
-    // fileData[0] = fileData[0].split(":");
-    // fileData[0][1] = fileData[0][1].split("/");
-
     var fileType = fileData.split("/")[0].split(":")[1];
     var fileFormat = fileData.split("/")[1].split(";")[0];
     
     switch (fileType) {
       case "image":
         if(imgFormats.includes(fileFormat)) {return "image"}
-        return false;
+        return undefined;
     
       default:
-        return false;
+        return undefined;
     }
   }
 
@@ -109,13 +104,23 @@ export class ChatComponent implements OnInit {
   }
 
   sendFileMessage(base64File) {
-    $('#photo').value = "";
-    let data = {
-      "message": this.message,
-      "file": base64File
-    };
+    var fileData = base64File.split(",");
+    var fileType = this.validFile(fileData[0]);
+    if(fileType != undefined) {
+      let data = {
+        "message": this.message,
+        "file": {
+          "filedata": base64File,
+          "filetype": fileType
+        }
+      };
+      this.chatService.sendFile(data);
+    } else {
+      this.chatService.sendMessage(this.message);
+      //TODO maybe insert error here
+    }
+    $('#photo').value = ""; 
     this.message = "";
-    this.chatService.sendFile(data);
   }
 
   getBase64String(file) {
