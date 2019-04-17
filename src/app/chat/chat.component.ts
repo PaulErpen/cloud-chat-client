@@ -19,10 +19,6 @@ export class ChatComponent implements OnInit {
   message: string;  
   messages: Message[] = [];
   files: FileList;
-  uploader: FileUploader = new FileUploader({ url: env.apiUrl+"/upload",
-  itemAlias: 'photo',
-  removeAfterUpload: true, 
-  autoUpload: false });
 
   constructor(private chatService: ChatService, private http: HttpClient) { }
 
@@ -51,30 +47,6 @@ export class ChatComponent implements OnInit {
       .subscribe((update: string) => {
         this.updateMessage(update);
       });
-
-    this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
-    this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-          console.log("ImageUpload:uploaded:", item, status, response);
-      };
-  }
-
-  handleNewMessage(message: Message) {
-    switch (message.type) {
-      case "message":
-      case "broadcast":
-        this.messages.push(message);
-        break;
-      case "filemessage":
-      case "filebroadcast":
-        this.handleFileMessage(message);
-        break;
-      default:
-        break;
-    }
-  }
-
-  handleFileMessage(message: Message) {
-    this.messages.push(message);
   }
 
   validFile(fileData) {
