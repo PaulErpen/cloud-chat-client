@@ -63,11 +63,28 @@ export class ChatComponent implements OnInit {
   }
 
   upload(inputEl) {
-    let formData = new FormData();
-    formData.append('message', this.message);
-    formData.append('photo', inputEl.files.item(0));
-    $('#photo')[0].value = "";
-    this.chatService.sendFile(formData);
+    this.getBase64String(inputEl.files.item(0)).then(
+      (res) => this.sendFileMessage(res)
+    );    
+  }
+
+  sendFileMessage(base64File) {
+    $('#photo').value = "";
+    let data = {
+      "message": this.message,
+      "file": base64File
+    };
+    this.message = "";
+    this.chatService.sendFile(data);
+  }
+
+  getBase64String(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
   }
 
   updateMessage(update) {

@@ -74,16 +74,24 @@ export class ChatService {
             });
         });
     }
-    public sendFile(formData) {
+    public sendFile(data) {
         var selectedUsers = this.userlistservice.getSelectedUsers();
-        formData.append("selectedUsers", selectedUsers.join(";"));
-        formData.append("username", JSON.parse(localStorage.getItem("currentUser")).username);
-        this.http
-        .post(
-            this.url+"/upload", 
-            formData,
-            {responseType: 'text'}
-        ).toPromise()
-        .then((res) => console.log(res));
+        if(selectedUsers.length > 0) {
+            var messageData = {
+                "message": data.message,
+                "username": JSON.parse(localStorage.getItem("currentUser")).username,
+                "file": data.file,
+                "selectedUsers": selectedUsers
+            };
+            this.socket.emit('file message', messageData);
+        } else {
+            var messageData = {
+                "message": data.message,
+                "username": JSON.parse(localStorage.getItem("currentUser")).username,
+                "file": data.file,
+                "selectedUsers": []
+            };
+            this.socket.emit('file broadcast', messageData);
+        }
     }
 }
