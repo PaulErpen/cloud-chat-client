@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 
 const env = environment;
 
+const imgFormats = ["jpeg", "jpg", "gif", "png", "apng", "svg", "bmp"];
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -41,7 +43,7 @@ export class ChatComponent implements OnInit {
     this.chatService
       .getMessages()
       .subscribe((message: Message) => {
-        this.messages.push(message);
+        this.handleNewMessage(message);
       });
     
     this.chatService
@@ -54,6 +56,44 @@ export class ChatComponent implements OnInit {
     this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
           console.log("ImageUpload:uploaded:", item, status, response);
       };
+  }
+
+  handleNewMessage(message: Message) {
+    switch (message.type) {
+      case "message":
+      case "broadcast":
+        this.messages.push(message);
+        break;
+      case "filemessage":
+      case "filebroadcast":
+        this.handleFileMessage(message);
+        break;
+      default:
+        break;
+    }
+  }
+
+  handleFileMessage(message: Message) {
+    var fileData = message.file.split(",");
+    debugger;
+  }
+
+  validFile(fileData) {
+    // fileData = fileData.split(";");
+    // fileData[0] = fileData[0].split(":");
+    // fileData[0][1] = fileData[0][1].split("/");
+
+    var fileType = fileData.split("/")[0].split(":")[1];
+    var fileFormat = fileData.split("/")[1].split(";")[0];
+    
+    switch (fileType) {
+      case "image":
+        if(imgFormats.includes(fileFormat)) {return "image"}
+        return false;
+    
+      default:
+        return false;
+    }
   }
 
   onFileChange(event) { 

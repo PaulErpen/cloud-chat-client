@@ -65,6 +65,12 @@ export class ChatService {
             this.socket.on('new message', (message) => {
                 observer.next(message);
             });
+            this.socket.on('new filebroadcast', (message) => {
+                observer.next(message);
+            });
+            this.socket.on('new filemessage', (message) => {
+                observer.next(message);
+            });
         });
     }
     public getUpdates = () => {
