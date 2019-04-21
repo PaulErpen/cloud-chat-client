@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --ssl --ssl-key ssl/localhost.key  --ssl-cert ssl/localhost.crt",
     "build": "ng build",
-    "buildprod": "ng build --configuration=production",
+    "buildprod": "ng build --configuration=production --ssl",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
