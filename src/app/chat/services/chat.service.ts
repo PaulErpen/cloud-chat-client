@@ -13,7 +13,10 @@ export class ChatService {
   private url = env.apiUrl;
   private socket;
 
-    constructor(private userlistservice: UserListService, private http: HttpClient) {
+    constructor(
+        private userlistservice: UserListService, 
+        private http: HttpClient
+        ) {
         this.socket = io(this.url);
     }
 
@@ -36,8 +39,7 @@ export class ChatService {
         }
     }
 
-    public sendLoginMessage() {
-        var username = JSON.parse(localStorage.getItem("currentUser")).username;
+    public sendLoginMessage(username) {
         var messageData = {
             "message": username +
                 " entered the chatroom.",

@@ -11,14 +11,7 @@ export class AuthGuard implements CanActivate {
     ) {}
 
     canActivate() {
-        return this.authenticationService.hasValidLogin()
-            .then(
-                (res) => this.decideRedirect(res)
-            );
-    }
-
-    decideRedirect(res) {
-        if(res) {
+        if(this.authenticationService.hasValidLogin()) {
             return true;
         } else {
             this.router.navigate(['/login']);

@@ -15,10 +15,7 @@ export class MastheadComponent implements OnInit {
   constructor(private auth:AuthenticationService, private router: Router) { }
 
   ngOnInit() {
-    if(this.auth.currentUserValue != undefined) {
-      this.updateUser(this.auth.currentUserValue);
-    }
-    this.auth.currentUser.subscribe({
+    this.auth.currentUserValue.subscribe({
       next: userValue => this.updateUser(userValue)
     });
   }

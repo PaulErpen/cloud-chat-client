@@ -10,57 +10,59 @@ const env = environment;
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
+    public currentUserValue: Observable<User>;
+    private saveUser: User;
 
     constructor(private http: HttpClient, private chatService: ChatService) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
-
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
+        this.currentUserSubject = new BehaviorSubject<User>({"username": "", "password": ""});
+        this.currentUserValue = this.currentUserSubject.asObservable();
     }
     
     login(username: string, password: string) {
         var data = JSON.stringify({'username':username, 'password':password});
         var headers = {headers: {'Content-Type': 'application/json'}};
+        this.saveUser = {"username": username, "password": password};
         return this.http.post(env.apiUrl+'/login', 
             data, headers).toPromise()
             .then(
-                (res) => this.validateLogin(res)
+                (res) => {return this.validateLogin(res);}
             );
     }
 
+    public getCurrentUserName() {
+        return this.currentUserSubject.value.username;
+    }
+    
     hasValidLogin() {
-        var user = localStorage.getItem("currentUser");
-        var headers = {headers: {'Content-Type': 'application/json'}};
-        return this.http.post(env.apiUrl+'/login', 
-            user, headers).toPromise();
+        return this.currentUserSubject.value.username != "" && this.currentUserSubject.value.password != "";
     }
 
     register(username: string, password: string) {
         var data = JSON.stringify({'username':username, 'password':password});
         var headers = {headers: {'Content-Type': 'application/json'}};
+        this.saveUser = {"username": username, "password": password};
         return this.http.post(env.apiUrl+'/register', 
             data,
             headers).toPromise()
             .then(
-                (res) => this.validateLogin(res)
+                (res) => {return this.validateLogin(res);}
             );
     }
 
     validateLogin(res) {
-        if(res != false) {
-            localStorage.setItem('currentUser', JSON.stringify(res));
-            this.currentUserSubject.next(res);
+        if(res.result) {
+            this.currentUserSubject.next(this.saveUser);
+            this.chatService.sendLoginMessage(this.saveUser.username);
+            this.saveUser = null;
+        } else {
+            this.currentUserSubject = null;
+            this.saveUser = null;
         }
-        return res;
+        return res.result;
     }
 
     logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        this.chatService.sendLogoutMessage(this.currentUserValue);
+        this.chatService.sendLogoutMessage(this.currentUserSubject.value);
         this.currentUserSubject.next(null);
         window.location.reload();
     }
