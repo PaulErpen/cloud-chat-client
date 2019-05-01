@@ -3,6 +3,8 @@
         [attr.data-username] = "user.username"
         (click)="clickUser($event)"
         [ngClass]="{'selected' : user.isSelected}"
-        class = "user-label">{{user.username}}
+        class = "user-label">
+        <img src="assets/img/userpic.jpg">
+        {{user.username}}
     </div>
 </div>

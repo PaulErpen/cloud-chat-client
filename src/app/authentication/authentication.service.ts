@@ -53,6 +53,7 @@ export class AuthenticationService {
         if(res.result) {
             this.currentUserSubject.next(this.saveUser);
             this.chatService.sendLoginMessage(this.saveUser.username);
+            localStorage.setItem("currentUser", JSON.stringify(this.saveUser));            
             this.saveUser = null;
         } else {
             this.currentUserSubject = null;
@@ -64,6 +65,7 @@ export class AuthenticationService {
     logout() {
         this.chatService.sendLogoutMessage(this.currentUserSubject.value);
         this.currentUserSubject.next(null);
+        localStorage.removeItem("currentUser");
         window.location.reload();
     }
 }

@@ -3,6 +3,8 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { OnlineUser } from '../../../../_models/online_user';
 import { environment } from '../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+
 const env = environment;
 
 @Injectable({
@@ -13,7 +15,7 @@ export class UserListService {
   private socket;
   users: OnlineUser[] = [];
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.socket = io(this.url);
    }
 
@@ -21,6 +23,14 @@ export class UserListService {
     return Observable.create((observer) => {
         this.socket.on('user update', (userlist) => {
             observer.next(this.setUserList(userlist.users));
+        });
+    });
+  }
+
+  public getUsersImages = () => {
+    return Observable.create((observer) => {
+        this.socket.on('user image', (userimage) => {
+            observer.next(userimage);
         });
     });
   }
@@ -36,7 +46,7 @@ export class UserListService {
           if(oldUser.username == user) isSelected = oldUser.isSelected;
         }
   
-        newUsers.push({"username": user, "isSelected": isSelected});
+        newUsers.push({"username": user, "isSelected": isSelected, "profilePicture": ""});
       }
     }
 

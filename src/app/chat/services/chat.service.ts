@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { UserListService } from '../components/user-list/services/user-list.service';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 const env = environment;
 
@@ -14,8 +13,7 @@ export class ChatService {
   private socket;
 
     constructor(
-        private userlistservice: UserListService, 
-        private http: HttpClient
+        private userlistservice: UserListService
         ) {
         this.socket = io(this.url);
     }

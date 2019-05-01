@@ -17,6 +17,13 @@ export class UserListComponent implements OnInit {
     this.userlistservice.getUsers().subscribe((users) => {
       this.setUserList(users);
     });;
+    this.userlistservice.getUsersImages().subscribe((userimage) => {
+      this.setUserImage(userimage);
+    });;
+  }
+
+  setUserImage(userimage) {
+    debugger;
   }
 
   setUserList(users) {
