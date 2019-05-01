@@ -37,8 +37,8 @@ export class AuthenticationService {
         return this.currentUserSubject.value.username != "" && this.currentUserSubject.value.password != "";
     }
 
-    register(username: string, password: string) {
-        var data = JSON.stringify({'username':username, 'password':password});
+    register(username: string, password: string, profilepic) {
+        var data = JSON.stringify({'username':username, 'password':password, 'profilepic': profilepic});
         var headers = {headers: {'Content-Type': 'application/json'}};
         this.saveUser = {"username": username, "password": password};
         return this.http.post(env.apiUrl+'/register', 
@@ -53,6 +53,7 @@ export class AuthenticationService {
         if(res.result) {
             this.currentUserSubject.next(this.saveUser);
             this.chatService.sendLoginMessage(this.saveUser.username);
+            localStorage.setItem("currentUser", JSON.stringify(this.saveUser));            
             this.saveUser = null;
         } else {
             this.currentUserSubject = null;
@@ -64,6 +65,7 @@ export class AuthenticationService {
     logout() {
         this.chatService.sendLogoutMessage(this.currentUserSubject.value);
         this.currentUserSubject.next(null);
+        localStorage.removeItem("currentUser");
         window.location.reload();
     }
 }

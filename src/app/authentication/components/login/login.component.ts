@@ -18,10 +18,20 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.auth.login(this.username, this.password)
+    if(this.username.length < 1) {
+      this.error = "Please enter a username!";
+    } else if(this.username.length > 50) {
+      this.error = "Your username can't be longer than 50 characters!";
+    }else if(this.password.length > 50) {
+      this.error = "Your password can't be longer than 50 characters!";
+    } else if(this.username.includes(";") || this.username.includes(" ")) {
+      this.error = "Username can't contain 'spaces' or ';'!";
+    } else {
+      this.auth.login(this.username, this.password)
       .then(
         (res) => this.loginRedirect(res)
       );
+    }
   }
 
   loginRedirect(res) {

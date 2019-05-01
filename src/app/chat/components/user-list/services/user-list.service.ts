@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import { Observable } from 'rxjs/Observable';
 import { OnlineUser } from '../../../../_models/online_user';
 import { environment } from '../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 const env = environment;
 
 @Injectable({
@@ -11,10 +13,14 @@ const env = environment;
 export class UserListService {
   private url = env.apiUrl;
   private socket;
-  users: OnlineUser[] = [];
+  private users: OnlineUser[] = [];
+  private currentImageSubject: BehaviorSubject<Object>;
+  public currentImageValue: Observable<Object>;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.socket = io(this.url);
+    this.currentImageSubject = new BehaviorSubject<Object>({"image":""});
+    this.currentImageValue = this.currentImageSubject.asObservable();
    }
 
   public getUsers = () => {
@@ -36,12 +42,24 @@ export class UserListService {
           if(oldUser.username == user) isSelected = oldUser.isSelected;
         }
   
-        newUsers.push({"username": user, "isSelected": isSelected});
+        newUsers.push({"username": user, "isSelected": isSelected, "profilePicture": ""});
+
+        var data = JSON.stringify({'username':user});
+        var headers = {headers: {'Content-Type': 'application/json'}};
+        this.http.post(env.apiUrl+'/userimage', 
+            data, headers).toPromise()
+            .then(
+                (res) => {this.updateUserPicture(res);}
+            );
       }
     }
 
     this.users = newUsers;
     return this.users;
+  }
+
+  updateUserPicture(res) {
+    this.currentImageSubject.next(res);
   }
 
   clickUser($event) {
