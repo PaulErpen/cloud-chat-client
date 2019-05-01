@@ -14,13 +14,13 @@ export class UserListService {
   private url = env.apiUrl;
   private socket;
   private users: OnlineUser[] = [];
-  private currentUserSubject: BehaviorSubject<OnlineUser>;
-  public currentUserValue: Observable<OnlineUser>;
+  private currentImageSubject: BehaviorSubject<Object>;
+  public currentImageValue: Observable<Object>;
 
   constructor(private http: HttpClient) {
     this.socket = io(this.url);
-    this.currentUserSubject = new BehaviorSubject<OnlineUser>({"username": "", "isSelected": false, "profilePicture": ""});
-    this.currentUserValue = this.currentUserSubject.asObservable();
+    this.currentImageSubject = new BehaviorSubject<Object>({"image":""});
+    this.currentImageValue = this.currentImageSubject.asObservable();
    }
 
   public getUsers = () => {
@@ -59,7 +59,7 @@ export class UserListService {
   }
 
   updateUserPicture(res) {
-    this.currentUserSubject.next(res);
+    this.currentImageSubject.next(res);
   }
 
   clickUser($event) {

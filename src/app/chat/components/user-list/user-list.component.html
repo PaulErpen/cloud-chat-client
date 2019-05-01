@@ -4,7 +4,14 @@
         (click)="clickUser($event)"
         [ngClass]="{'selected' : user.isSelected}"
         class = "user-label">
-        <img src="assets/img/userpic.jpg">
-        {{user.username}}
+        <div class = "profilepic-wrapper" *ngIf="user.profilePicture == ''">
+            <img src="assets/img/userpic.jpg" class = "profilepic">
+        </div>
+        <div class = "profilepic-wrapper" *ngIf="user.profilePicture != ''">
+            <img [src]="user.profilePicture" class = "profilepic">
+        </div>
+        <div class = "username">
+            {{user.username}}
+        </div>
     </div>
 </div>

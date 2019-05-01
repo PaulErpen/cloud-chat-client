@@ -1,10 +1,18 @@
 <div class = "masthead">
-  <div *ngIf="loggedin">
-    <span>Logged in as </span>
-    <span>{{user.username}}</span>
-    <button (click)="logout()">Logout</button>
+  <div class = "masthead-content" *ngIf="loggedin">
+    <div class = "masthead-label">
+      <span>Logged in as </span>
+      <span>{{user.username}}</span>
+      <button (click)="logout()">Logout</button>
+    </div>
+    <div class = "profilepic-wrapper" *ngIf="hasPic == false">
+      <img src="assets/img/userpic.jpg" class = "profilepic">
+    </div>
+    <div class = "profilepic-wrapper" *ngIf="hasPic">
+      <img [src] = "profilepic" class = "profilepic">
+    </div>
   </div>
-  <div *ngIf="loggedin == false">
+  <div class = "masthead-content" *ngIf="loggedin == false">
     <span>Not logged in</span>
   </div>
 </div>
