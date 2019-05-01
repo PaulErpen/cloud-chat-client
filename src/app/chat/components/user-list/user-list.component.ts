@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UserListService } from './services/user-list.service';
 import { OnlineUser } from '../../../_models/online_user';
 
-
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -11,19 +10,14 @@ import { OnlineUser } from '../../../_models/online_user';
 export class UserListComponent implements OnInit {
   users: OnlineUser[] = [];
 
-  constructor(private userlistservice: UserListService) { }
+  constructor(private userlistservice: UserListService) {
+    
+  }
 
   ngOnInit() {
     this.userlistservice.getUsers().subscribe((users) => {
       this.setUserList(users);
-    });;
-    this.userlistservice.getUsersImages().subscribe((userimage) => {
-      this.setUserImage(userimage);
-    });;
-  }
-
-  setUserImage(userimage) {
-    debugger;
+    });
   }
 
   setUserList(users) {

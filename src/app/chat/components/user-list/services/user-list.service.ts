@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import { Observable } from 'rxjs/Observable';
 import { OnlineUser } from '../../../../_models/online_user';
 import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const env = environment;
 
@@ -13,24 +13,20 @@ const env = environment;
 export class UserListService {
   private url = env.apiUrl;
   private socket;
-  users: OnlineUser[] = [];
+  private users: OnlineUser[] = [];
+  private currentUserSubject: BehaviorSubject<OnlineUser>;
+  public currentUserValue: Observable<OnlineUser>;
 
   constructor(private http: HttpClient) {
     this.socket = io(this.url);
+    this.currentUserSubject = new BehaviorSubject<OnlineUser>({"username": "", "isSelected": false, "profilePicture": ""});
+    this.currentUserValue = this.currentUserSubject.asObservable();
    }
 
   public getUsers = () => {
     return Observable.create((observer) => {
         this.socket.on('user update', (userlist) => {
             observer.next(this.setUserList(userlist.users));
-        });
-    });
-  }
-
-  public getUsersImages = () => {
-    return Observable.create((observer) => {
-        this.socket.on('user image', (userimage) => {
-            observer.next(userimage);
         });
     });
   }
@@ -47,11 +43,23 @@ export class UserListService {
         }
   
         newUsers.push({"username": user, "isSelected": isSelected, "profilePicture": ""});
+
+        var data = JSON.stringify({'username':user});
+        var headers = {headers: {'Content-Type': 'application/json'}};
+        this.http.post(env.apiUrl+'/userimage', 
+            data, headers).toPromise()
+            .then(
+                (res) => {this.updateUserPicture(res);}
+            );
       }
     }
 
     this.users = newUsers;
     return this.users;
+  }
+
+  updateUserPicture(res) {
+    this.currentUserSubject.next(res);
   }
 
   clickUser($event) {
