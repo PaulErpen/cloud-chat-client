@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: "https://cloud-chat.eu-de.mybluemix.net"
+  apiUrl: "chat-server.eu-de.mybluemix.net"
 };
