@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../authentication.service';
 import {Router} from '@angular/router';
 import  *  as $ from 'jquery';
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {Message} from "../../../_models/message";
+import {LanguagesService} from "../../services/languages.service";
 
 const imgFormats = ["jpeg", "jpg", "gif", "png", "apng", "svg", "bmp"];
 
@@ -15,10 +18,23 @@ export class RegistrationComponent implements OnInit {
   password: string;
   password_repeat: string;
   error: string;
+  languageForm: FormGroup;
+  languages = [];
+  selectedLanguage;
 
-  constructor(private auth: AuthenticationService, private router : Router) { }
+  constructor(private auth: AuthenticationService, private router : Router, private fb: FormBuilder, private languagesService: LanguagesService) { }
 
   ngOnInit() {
+    this.languageForm = this.fb.group({
+      languageControl: [this.languages[1]]
+    });
+
+    this.languagesService
+      .getAvailableLanguages()
+      .subscribe((languages: any) => {
+        this.languages = languages;
+        this.selectedLanguage = this.languages[0].language;
+      });
   }
 
   register() {
@@ -46,7 +62,7 @@ export class RegistrationComponent implements OnInit {
           )
         }
       } else {
-        this.auth.register(this.username, this.password, "").then(
+        this.auth.register(this.username, this.password, "", this.selectedLanguage).then(
           (res) => this.registerRedirect(res)
         );
       }
@@ -55,7 +71,7 @@ export class RegistrationComponent implements OnInit {
 
   validateProfilePic(base64) {
     if(this.validFile(base64)) {
-      this.auth.register(this.username, this.password, base64).then(
+      this.auth.register(this.username, this.password, base64, this.selectedLanguage).then(
         (res) => this.registerRedirect(res)
         )
     } else {
@@ -85,5 +101,4 @@ export class RegistrationComponent implements OnInit {
       this.error = "Registration failed!";
     }
   }
-
 }

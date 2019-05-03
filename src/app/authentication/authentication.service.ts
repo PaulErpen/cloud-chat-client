@@ -37,10 +37,10 @@ export class AuthenticationService {
         return this.currentUserSubject.value.username != "" && this.currentUserSubject.value.password != "";
     }
 
-    register(username: string, password: string, profilepic) {
-        var data = JSON.stringify({'username':username, 'password':password, 'profilepic': profilepic});
+    register(username: string, password: string, profilepic, language: string) {
+        var data = JSON.stringify({'username':username, 'password':password, 'profilepic':profilepic, 'language':language});
         var headers = {headers: {'Content-Type': 'application/json'}};
-        this.saveUser = {"username": username, "password": password};
+        this.saveUser = {"username": username, "password": password, "language": language};
         return this.http.post(env.apiUrl+'/register', 
             data,
             headers).toPromise()

@@ -72,14 +72,14 @@ export class ChatService {
                 observer.next(message);
             });
         });
-    }
+    };
     public getUpdates = () => {
         return Observable.create((observer) => {
             this.socket.on('update message', (message) => {
                 observer.next(message);
             });
         });
-    }
+    };
     public sendFile(data) {
         var selectedUsers = this.userlistservice.getSelectedUsers();
         if(selectedUsers.length > 0) {
@@ -99,5 +99,5 @@ export class ChatService {
             };
             this.socket.emit('file broadcast', messageData);
         }
-    }
+    };
 }
