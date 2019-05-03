@@ -6,7 +6,7 @@
     <input type = "password" [(ngModel)]="password_repeat" placeholder="Repeat password">
     <form [formGroup]="languageForm">
       <select [(ngModel)]="selectedLanguage" formControlName="languageControl">
-        <option *ngFor="let language of languages">{{language.name}}</option>
+        <option *ngFor="let language of languages" [value]="language.language">{{language.name}}</option>
       </select>
     </form>
     <div class = "button-wrapper-broad">

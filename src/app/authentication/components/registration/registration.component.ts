@@ -20,7 +20,7 @@ export class RegistrationComponent implements OnInit {
   error: string;
   languageForm: FormGroup;
   languages = [];
-  selectedLanguage;
+  selectedLanguage: string;
 
   constructor(private auth: AuthenticationService, private router : Router, private fb: FormBuilder, private languagesService: LanguagesService) { }
 
