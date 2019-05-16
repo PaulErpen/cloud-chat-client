@@ -30,7 +30,7 @@
         
         <div class = "bottom">
             <input [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()" />
-            <button (click)="sendMessage()">Send</button>
+            <button (click)="sendMessage()" [disabled]="message === ''" >Send</button>
             <input id="file" type="file" />
         </div>
         <div *ngIf= "error" class = "error">{{this.error}} <button (click)="close()">Close</button></div>
