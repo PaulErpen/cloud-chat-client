@@ -14,7 +14,7 @@ const videoFormats = ["mp4", "webm", "ogg"];
   styleUrls: ['./chat.component.less']
 })
 export class ChatComponent implements OnInit {
-  message: string;  
+  message: string = '';
   messages: Message[] = [];
   files: FileList;
   error: string;
