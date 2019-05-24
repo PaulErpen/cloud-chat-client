@@ -39,8 +39,6 @@ export class ChatService {
 
     public sendLoginMessage(username) {
         var messageData = {
-            "message": username +
-                " entered the chatroom.",
             "username": username
         };
         
@@ -50,8 +48,6 @@ export class ChatService {
     public sendLogoutMessage(user) {
         var username = user.username;
         var messageData = {
-            "message": username +
-                " exited the chatroom.",
             "username": username
         };
         this.socket.emit('chat logout', messageData);

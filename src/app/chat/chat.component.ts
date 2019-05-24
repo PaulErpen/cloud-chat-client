@@ -109,7 +109,13 @@ export class ChatComponent implements OnInit {
   updateMessage(update) {
     for (const i in this.messages) {
       if(this.messages[i].messageid == update.messageid) {
-        this.messages[i].mood = update.mood;
+        switch (update.type) {
+          case "mood":
+          this.messages[i].mood = update.property;           
+            break;
+          case "payload":
+            this.messages[i].payload = update.property;
+        }
       }
     }
   }
