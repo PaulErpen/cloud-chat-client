@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { UserListService } from '../components/user-list/services/user-list.service';
 import { environment } from '../../../environments/environment';
+import { AuthenticationService } from '../../authentication/authentication.service';
 const env = environment;
 
 @Injectable({
@@ -13,9 +14,22 @@ export class ChatService {
   private socket;
 
     constructor(
-        private userlistservice: UserListService
+        private userlistservice: UserListService,
+        private authenticationService: AuthenticationService
         ) {
-        this.socket = io(this.url);
+        this.socket = io(this.url, {
+            reconnection: true,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax : 5000,
+            reconnectionAttempts: Infinity
+        });
+        this.socket.on('connection', this.waitForResignUp());
+    }
+
+    public waitForResignUp() {
+        var username = this.authenticationService.getCurrentUserName();
+        if(username != "")
+            this.socket.emit('chat signup', {"username": username});
     }
 
     public sendMessage(message) {
@@ -38,19 +52,11 @@ export class ChatService {
     }
 
     public sendLoginMessage(username) {
-        var messageData = {
-            "username": username
-        };
-        
-        this.socket.emit('chat login', messageData);
+        this.socket.emit('chat login', {"username": username});
     }
 
     public sendLogoutMessage(user) {
-        var username = user.username;
-        var messageData = {
-            "username": username
-        };
-        this.socket.emit('chat logout', messageData);
+        this.socket.emit('chat logout', {"username": user.username});
     }
 
     public getMessages = () => {
@@ -96,4 +102,12 @@ export class ChatService {
             this.socket.emit('file broadcast', messageData);
         }
     };
+
+    public recoverFromDisconnect() {
+        /**
+         * only seems to happen if the disconnect is wanted
+         */
+        console.log("Trying to reconnect.");
+        debugger;
+    }
 }

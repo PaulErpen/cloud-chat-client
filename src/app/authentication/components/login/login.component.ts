@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../../authentication.service';
+import { AuthenticationService } from '../../authentication.service';
+import { ChatService } from '../../../chat/services/chat.service'
 import {Router} from '@angular/router';
 
 @Component({
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   password: string;
   error: string;
 
-  constructor(private auth: AuthenticationService, private router: Router) { }
+  constructor(private auth: AuthenticationService, private router: Router, private chatService: ChatService) { }
 
   ngOnInit() {
   }
@@ -28,6 +29,12 @@ export class LoginComponent implements OnInit {
       this.error = "Username can't contain 'spaces' or ';'!";
     } else {
       this.auth.login(this.username, this.password)
+      .then((res) => {
+        if(res) {
+          this.chatService.sendLoginMessage(this.username);
+        }
+        return res;
+      })
       .then(
         (res) => this.loginRedirect(res)
       );
@@ -35,7 +42,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginRedirect(res) {
-    if(res != false) {
+    if(res) {
       this.router.navigate(["/"]);
     } else {
       this.error = "Login failed!";
