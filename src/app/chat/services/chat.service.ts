@@ -17,16 +17,15 @@ export class ChatService {
         private userlistservice: UserListService,
         private authenticationService: AuthenticationService
         ) {
-        this.socket = io(this.url, {
-            reconnection: true,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax : 5000,
-            reconnectionAttempts: Infinity
+        this.socket = io(this.url);
+        this.socket.io.on('connect_error', (error) => {
+            this.waitForResignUp();
         });
-        this.socket.on('connection', this.waitForResignUp());
     }
 
     public waitForResignUp() {
+        debugger;
+        console.log("connection to current instance lost - reconnecting");
         var username = this.authenticationService.getCurrentUserName();
         if(username != "")
             this.socket.emit('chat signup', {"username": username});
