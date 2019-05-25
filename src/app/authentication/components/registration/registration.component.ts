@@ -3,8 +3,8 @@ import {AuthenticationService} from '../../authentication.service';
 import {Router} from '@angular/router';
 import  *  as $ from 'jquery';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Message} from "../../../_models/message";
 import {LanguagesService} from "../../services/languages.service";
+import { ChatService } from '../../../chat/services/chat.service'
 
 const imgFormats = ["jpeg", "jpg", "gif", "png", "apng", "svg", "bmp"];
 
@@ -22,7 +22,12 @@ export class RegistrationComponent implements OnInit {
   languages = [];
   selectedLanguage: string;
 
-  constructor(private auth: AuthenticationService, private router : Router, private fb: FormBuilder, private languagesService: LanguagesService) { }
+  constructor(
+    private auth: AuthenticationService, 
+    private router : Router, private fb: FormBuilder, 
+    private languagesService: LanguagesService,
+    private chatService: ChatService
+  ) { }
 
   ngOnInit() {
     this.languageForm = this.fb.group({
@@ -62,7 +67,13 @@ export class RegistrationComponent implements OnInit {
           )
         }
       } else {
-        this.auth.register(this.username, this.password, "", this.selectedLanguage).then(
+        this.auth.register(this.username, this.password, "", this.selectedLanguage)
+        .then((res) => {
+          if(res) {
+            this.chatService.sendLoginMessage(this.username);
+          }
+        })
+        .then(
           (res) => this.registerRedirect(res)
         );
       }
@@ -95,7 +106,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   registerRedirect(res) {
-    if(res != false) {
+    if(res) {
       this.router.navigate(["/"]);
     } else {
       this.error = "Registration failed!";

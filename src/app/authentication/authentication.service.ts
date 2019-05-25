@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ChatService } from '../chat/services/chat.service';
 import { User } from '../_models/user';
 
 import { environment } from '../../environments/environment';
@@ -13,7 +12,7 @@ export class AuthenticationService {
     public currentUserValue: Observable<User>;
     private saveUser: User;
 
-    constructor(private http: HttpClient, private chatService: ChatService) {
+    constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>({"username": "", "password": ""});
         this.currentUserValue = this.currentUserSubject.asObservable();
     }
@@ -52,7 +51,6 @@ export class AuthenticationService {
     validateLogin(res) {
         if(res.result) {
             this.currentUserSubject.next(this.saveUser);
-            this.chatService.sendLoginMessage(this.saveUser.username);
             localStorage.setItem("currentUser", JSON.stringify(this.saveUser));            
             this.saveUser = null;
         } else {
@@ -63,7 +61,6 @@ export class AuthenticationService {
     }
 
     logout() {
-        this.chatService.sendLogoutMessage(this.currentUserSubject.value);
         this.currentUserSubject.next(null);
         localStorage.removeItem("currentUser");
         window.location.reload();
