@@ -4,7 +4,7 @@
 
 export const environment = {
   production: true,
-  apiUrl: "https://chat-server.eu-de.mybluemix.net"
+  apiUrl: "http://localhost:3000"
 };
 
 
