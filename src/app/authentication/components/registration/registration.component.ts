@@ -85,9 +85,13 @@ export class RegistrationComponent implements OnInit {
 
   validateProfilePic(base64) {
     if(this.validFile(base64)) {
+      this.loading = true;
       this.auth.register(this.username, this.password, base64, this.selectedLanguage).then(
-        (res) => this.registerRedirect(res)
-        )
+        (res) => {
+          this.chatService.sendLoginMessage(this.username);
+          this.registerRedirect(res);
+          return res;
+        })
     } else {
       this.error = "File does not have the right format! Allowed formats are .jpeg, .jpg, .gif, .png, .apng, .svg or .bmp.";
     }

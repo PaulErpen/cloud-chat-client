@@ -44,11 +44,11 @@ export class LoginComponent implements OnInit {
   }
 
   loginRedirect(res) {
+    this.loading = false;
     if(res) {
       this.router.navigate(["/"]);
     } else {
       this.error = "Login failed!";
     }
-    this.loading = false;
   }
 }
