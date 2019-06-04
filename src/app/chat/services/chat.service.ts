@@ -33,14 +33,14 @@ export class ChatService {
         if(selectedUsers.length > 0) {
             var messageData = {
                 "message": message,
-                "username": JSON.parse(localStorage.getItem("currentUser")).username,
+                "username": JSON.parse(localStorage.getItem("currentUser")),
                 "selectedUsers": selectedUsers
             };
             this.socket.emit('chat message', messageData);
         } else {
             var messageData = {
                 "message": message,
-                "username": JSON.parse(localStorage.getItem("currentUser")).username,
+                "username": JSON.parse(localStorage.getItem("currentUser")),
                 "selectedUsers": []
             };
             this.socket.emit('chat broadcast', messageData);
@@ -83,7 +83,7 @@ export class ChatService {
         if(selectedUsers.length > 0) {
             var messageData = {
                 "message": data.message,
-                "username": JSON.parse(localStorage.getItem("currentUser")).username,
+                "username": JSON.parse(localStorage.getItem("currentUser")),
                 "file": data.file,
                 "selectedUsers": selectedUsers
             };
@@ -91,7 +91,7 @@ export class ChatService {
         } else {
             var messageData = {
                 "message": data.message,
-                "username": JSON.parse(localStorage.getItem("currentUser")).username,
+                "username": JSON.parse(localStorage.getItem("currentUser")),
                 "file": data.file,
                 "selectedUsers": []
             };

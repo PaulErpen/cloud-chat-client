@@ -37,7 +37,7 @@ export class UserListService {
     for (let user of users) {
       var isSelected = false;
 
-      if(user != JSON.parse(localStorage.getItem("currentUser")).username) {
+      if(user != JSON.parse(localStorage.getItem("currentUser"))) {
         for (let oldUser of this.users) {
           if(oldUser.username == user) isSelected = oldUser.isSelected;
         }
