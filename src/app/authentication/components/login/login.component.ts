@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   error: string;
+  loading: boolean;
 
   constructor(private auth: AuthenticationService, private router: Router, private chatService: ChatService) { }
 
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
     } else if(this.username.includes(";") || this.username.includes(" ")) {
       this.error = "Username can't contain 'spaces' or ';'!";
     } else {
+      this.loading = true;
       this.auth.login(this.username, this.password)
       .then((res) => {
         if(res) {
@@ -47,5 +49,6 @@ export class LoginComponent implements OnInit {
     } else {
       this.error = "Login failed!";
     }
+    this.loading = false;
   }
 }

@@ -21,6 +21,7 @@ export class RegistrationComponent implements OnInit {
   languageForm: FormGroup;
   languages = [];
   selectedLanguage: string;
+  loading: boolean;
 
   constructor(
     private auth: AuthenticationService, 
@@ -67,10 +68,12 @@ export class RegistrationComponent implements OnInit {
           )
         }
       } else {
+        this.loading = true;
         this.auth.register(this.username, this.password, "", this.selectedLanguage)
         .then((res) => {
           if(res) {
             this.chatService.sendLoginMessage(this.username);
+            return res;
           }
         })
         .then(
@@ -88,7 +91,6 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.error = "File does not have the right format! Allowed formats are .jpeg, .jpg, .gif, .png, .apng, .svg or .bmp.";
     }
-    
   }
 
   validFile(fileData) {
@@ -111,5 +113,6 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.error = "Registration failed!";
     }
+    this.loading = false;
   }
 }

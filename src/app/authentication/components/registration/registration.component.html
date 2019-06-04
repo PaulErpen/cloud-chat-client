@@ -1,17 +1,22 @@
 <div class = "registration-panel">
     <h2>Registration</h2>
-    <input id="file" type="file" />
-    <input type = "text" [(ngModel)]="username" placeholder="Username">
-    <input type = "password" [(ngModel)]="password" placeholder="Password">
-    <input type = "password" [(ngModel)]="password_repeat" placeholder="Repeat password">
-    <form [formGroup]="languageForm">
-      <select [(ngModel)]="selectedLanguage" formControlName="languageControl">
-        <option *ngFor="let language of languages" [value]="language.language">{{language.name}}</option>
-      </select>
-    </form>
-    <div class = "button-wrapper-broad">
-        <button class = "registration-button" (click)="register()">Register</button>
+    <div [ngClass] = "{'loading-box': true, 'loading':loading}">
+        <div class = "loading-transparency">
+            <div class = "lds-dual-ring"></div>
+        </div>
+      <input id="file" type="file" />
+      <input type = "text" [(ngModel)]="username" placeholder="Username">
+      <input type = "password" [(ngModel)]="password" placeholder="Password">
+      <input type = "password" [(ngModel)]="password_repeat" placeholder="Repeat password">
+      <form [formGroup]="languageForm">
+        <select [(ngModel)]="selectedLanguage" formControlName="languageControl">
+          <option *ngFor="let language of languages" [value]="language.language">{{language.name}}</option>
+        </select>
+      </form>
+      <div class = "button-wrapper-broad">
+          <button class = "registration-button" (click)="register()">Register</button>
+      </div>
+      <a href="/login">Click here to login.</a>
     </div>
-    <a href="/login">Click here to login.</a>
 </div>
 <div *ngIf= "error" class = "error">{{error}}</div>
