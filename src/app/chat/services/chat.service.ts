@@ -17,10 +17,7 @@ export class ChatService {
         private userlistservice: UserListService,
         private authenticationService: AuthenticationService
         ) {
-        this.socket = io(this.url);//, {transports: ['websocket', 'polling']}
-        this.socket.io.on('connect_error', (error) => {
-            this.waitForResignUp();
-        });
+        this.socket = io(this.url);
     }
 
     public waitForResignUp() {
