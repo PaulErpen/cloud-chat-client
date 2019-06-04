@@ -51,7 +51,7 @@ export class AuthenticationService {
     validateLogin(res) {
         if(res.result) {
             this.currentUserSubject.next(this.saveUser);
-            localStorage.setItem("currentUser", JSON.stringify(this.saveUser));            
+            localStorage.setItem("currentUser", JSON.stringify(this.saveUser.username));            
             this.saveUser = null;
         } else {
             this.currentUserSubject = null;
@@ -62,7 +62,7 @@ export class AuthenticationService {
 
     logout() {
         this.currentUserSubject.next(null);
-        localStorage.removeItem("currentUser");
         window.location.reload();
+        localStorage.removeItem("currentUser"); 
     }
 }
